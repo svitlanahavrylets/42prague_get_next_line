@@ -6,7 +6,7 @@
 /*   By: shavryle <shavryle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 16:43:57 by shavryle          #+#    #+#             */
-/*   Updated: 2025/12/03 17:59:25 by shavryle         ###   ########.fr       */
+/*   Updated: 2025/12/03 18:55:56 by shavryle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1000
+#  define BUFFER_SIZE 1
 # endif
 
 char	*get_next_line(int fd);
