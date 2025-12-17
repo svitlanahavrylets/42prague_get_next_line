@@ -6,31 +6,12 @@
 /*   By: shavryle <shavryle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 11:04:05 by shavryle          #+#    #+#             */
-/*   Updated: 2025/12/15 18:28:04 by shavryle         ###   ########.fr       */
+/*   Updated: 2025/12/17 17:42:49 by shavryle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
-
-
-char	*get_line(char *buffer)
-{
-	int		i;
-	char	*line;
-
-	line = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (buffer[i] && buffer[i] != '\n')
-	{
-		line[i] = buffer[i];
-		i++;
-	}
-	line[i] = '\n';
-	return (line);
-}
 
 char	*join_buffers(int fd, char *stash)
 {
@@ -42,7 +23,7 @@ char	*join_buffers(int fd, char *stash)
 	if (!buffer)
 		return (free(stash), NULL);
 	bytes_read = 1;
-	while (!ft_strchr(stash, '\n') && bytes_read > 0)
+	while (!ft_strchr(stash, DELIMITER) && bytes_read > 0)
 	{
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read < 0)
@@ -59,57 +40,57 @@ char	*join_buffers(int fd, char *stash)
 	return (stash);
 }
 
-char	*f_return_line(char *stash)
+char	*returned_line(char *stash)
 {
 	int		i;
-	char	*return_line;
+	char	*line;
 
 	i = 0;
-	while (stash[i] && stash[i] != '\n')
+	while (stash[i] && stash[i] != DELIMITER)
 		i++;
-	if (stash[i] == '\n')
+	if (stash[i] == DELIMITER)
 		i++;
-	return_line = malloc(i + 1);
-	if (!return_line)
+	line = malloc(i + 1);
+	if (!line)
 		return (NULL);
 	i = 0;
-	while (stash[i] && stash[i] != '\n')
+	while (stash[i] && stash[i] != DELIMITER)
 	{
-		return_line[i] = stash[i];
+		line[i] = stash[i];
 		i++;
 	}
-	if (stash[i] == '\n')
+	if (stash[i] == DELIMITER)
 	{
-		return_line[i] = stash[i];
+		line[i] = stash[i];
 		i++;
 	}
-	return_line[i] = '\0';
-	return (return_line);
+	line[i] = '\0';
+	return (line);
 }
 
-char	*f_new_stash(char *stash)
+char	*create_new_stash(char *stash)
 {
-	char	*start;
+	int		i;
 	char	*new_stash;
 
 	if (!stash)
+		return (NULL);
+	i = 0;
+	while (stash[i] && stash[i] != DELIMITER)
+		i++;
+	if (stash[i] == DELIMITER)
+		i++;
+	if (stash[i] == '\0')
 		return (free(stash), NULL);
-	start = stash;
-	while (*stash && *stash != '\n')
-		stash++;
-	if (*stash == '\n')
-		stash++;
-	if (*stash == 0 || !*stash)
-		return (free(start), NULL);
-	new_stash = ft_strdup(stash);
-	free(start);
+	new_stash = ft_strdup(&stash[i]);
+	free(stash);
 	return (new_stash);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		*return_line;
+	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -117,29 +98,36 @@ char	*get_next_line(int fd)
 		stash = ft_strdup("");
 	stash = join_buffers(fd, stash);
 	if (!stash || *stash == 0)
+	{
+		free(stash);
+		stash = NULL;
 		return (NULL);
-	return_line = f_return_line(stash);
-	stash = f_new_stash(stash);
-	return (return_line);
+	}
+	line = returned_line(stash);
+	stash = create_new_stash(stash);
+	return (line);
 }
 
-int	main(void)
+/*int	main(void)
 {
 	int		fd;
 	char	*line;
 	int		i;
 
-	i = 0;
-	line = NULL;
 	fd = open("text.txt", O_RDONLY);
-	while (i < 2)
+	while ((line = get_next_line(fd)) != NULL)
 	{
-		line = get_next_line(fd);
-		printf("%s", line);
-		i++;
+
+		i = 0;
+		while (line[i])
+		{
+			if (line[i] != '\n') 
+				write(1, &line[i], 1);
+			i++;
+		}
+		write(1, "\n", 1);
 		free(line);
 	}
 	close(fd);
 	return (0);
-}
-
+}*/
