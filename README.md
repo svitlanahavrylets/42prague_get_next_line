@@ -3,24 +3,24 @@
 # Get Next Line
 
 ## Description
-[cite_start]This project consists of coding a function that returns one line at a time from a text file[cite: 127]. The goal is to learn about static variables and file descriptor management in C.
+This project consists of coding a function that returns one line at a time from a text file. The goal is to learn about static variables and file descriptor management in C.
 
 **Prototype:**
 `char *get_next_line(int fd);`
 The function reads from a file descriptor (`fd`) and returns the line including the terminating `\n` character (unless EOF is reached without one). It returns `NULL` if there is nothing else to read or an error occurs.
 
 ## Instructions
-[cite_start]To use this function in your code, include the header `get_next_line.h` and compile your files with the source files.
+To use this function in your code, include the header `get_next_line.h` and compile your files with the source files.
 
 ### Compilation
 You **must define the buffer size** at compilation time using the `-D` flag.
 
-```bash
+``` bash
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main.c -o gnl
 ```
 
 ## Execution
-```bash
+``` bash
 ./gnl
 ```
 
@@ -44,6 +44,7 @@ The logic is divided into three steps:
 - Manual pages
 
 **Peer Learning:**
+
 Discussed the concept of static variables and buffer management with another students.
 
 **Internet** 
@@ -51,6 +52,7 @@ Discussed the concept of static variables and buffer management with another stu
 - [StackOverflow](https://stackoverflow.com)
 
 **AI Usage:** 
-- [ChatGPT](https://chatgpt.com/), 
+- [ChatGPT](https://chatgpt.com/) 
 - [Gemini](https://gemini.google.com/app)
+
 AI was used as a learning assistant to explain concepts that were new to me and to help analyze and fix compilation and Norminette errors.
